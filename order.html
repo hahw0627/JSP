@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>예약 결제</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- 헤더 -->
+  <header class="bg-blue-600 text-white text-center py-4 text-2xl font-bold mb-6">
+    예약 결제
+  </header>
+
+  <main class="max-w-2xl mx-auto bg-white shadow p-6 rounded">
+
+    <!-- 예약 요약 -->
+    <section class="mb-6">
+      <h2 class="text-xl font-semibold mb-2">예약 정보</h2>
+      <ul class="text-gray-700 text-sm space-y-1">
+        <li><strong>숙소명:</strong> 에메랄드 오션 리조트</li>
+        <li><strong>객실:</strong> 스탠다드 룸 1개</li>
+        <li><strong>숙박 기간:</strong> 2025-07-01 ~ 2025-07-03 (2박)</li>
+        <li><strong>이용 인원:</strong> 성인 2명</li>
+      </ul>
+    </section>
+
+    <!-- 결제 정보 -->
+    <section class="mb-6">
+      <h2 class="text-xl font-semibold mb-2">결제 정보</h2>
+      <div class="flex justify-between text-gray-700 text-sm">
+        <span>숙박 요금</span>
+        <span>150,000원</span>
+      </div>
+      <div class="flex justify-between text-gray-700 text-sm mt-1">
+        <span>세금 및 수수료</span>
+        <span>10,000원</span>
+      </div>
+      <div class="flex justify-between text-lg font-bold mt-4">
+        <span>총 결제 금액</span>
+        <span class="text-red-500">160,000원</span>
+      </div>
+    </section>
+
+    <!-- 결제 방법 선택 -->
+    <section class="mb-6">
+      <h2 class="text-xl font-semibold mb-2">결제 수단</h2>
+      <select class="w-full border px-4 py-2 rounded">
+        <option>카드 결제</option>
+        <option>계좌 이체</option>
+        <option>카카오페이</option>
+        <option>토스페이</option>
+      </select>
+    </section>
+
+    <!-- 결제 버튼 -->
+    <div class="text-right mt-6">
+      <button class="bg-red-500 text-white px-6 py-2 rounded text-lg hover:bg-red-600 transition" onclick="location.href='orderCheck.html'">
+        결제하기
+      </button>
+    </div>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="mt-12 text-center text-sm text-gray-600 py-4 border-t">
+    천안 여행 숙소 예약 시스템 © 2025 | 고객센터: 1588-0000
+  </footer>
+
+</body>
+</html>
