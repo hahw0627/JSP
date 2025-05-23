@@ -5,6 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>천안 숙소 예약 시스템</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .event-slide {
+      display: none;
+    }
+
+    .event-slide.active {
+      display: block;
+    }
+
+    .event-card {
+      background: #fefefe;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .event-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+
+    .event-info {
+      padding: 10px;
+    }
+
+    .event-title {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .event-date, .event-location {
+      font-size: 0.85rem;
+      color: #555;
+    }
+  </style>
 </head>
 <body class="bg-gray-50">
 
@@ -44,6 +80,12 @@
         <label class="block"><input type="radio" name="rating"> ★★★☆☆</label>
       </div>
       <button class="bg-blue-500 text-white w-full py-2 rounded">필터 적용</button>
+      <div class="mb-4 mt-8">
+        <h3 class="text-md font-bold mb-2 text-center">🎉 천안 지역 축제</h3>
+        <div id="bannerContainer" class="relative w-full">
+          <!-- 슬라이드 카드들이 여기에 추가됨 -->
+        </div>
+      </div>
     </aside>
 
     <!-- 중앙 검색 결과 -->
@@ -53,7 +95,7 @@
         <p class="text-gray-600">총 24개의 숙소</p>
       </div>
 
-      <!-- 숙소 카드 -->
+      <!-- 숙소 카드 예시 -->
       <a href="detail.html">
         <div class="bg-white shadow p-4 mb-4 rounded flex justify-between items-center">
           <div>
@@ -69,7 +111,6 @@
           </div>
         </div>
       </a>
-      
 
       <div class="bg-white shadow p-4 mb-4 rounded flex justify-between items-center">
         <div>
@@ -118,6 +159,43 @@
   <footer class="mt-12 text-center text-sm text-gray-600 py-4 border-t">
     천안 여행 숙소 예약 시스템 © 2025 | 고객센터: 1588-0000 | <a href="#" class="underline">개인정보처리방침</a>
   </footer>
+
+  <!-- 축제 배너 JS -->
+  <script>
+    fetch('festivals.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('bannerContainer');
+        data.slice(0, 5).forEach((event, idx) => {
+          const card = document.createElement('div');
+          card.className = `event-slide ${idx === 0 ? 'active' : ''}`;
+          card.innerHTML = `
+            <div class="event-card">
+              <img src="${event.firstimage}" alt="${event.title}" class="event-img"/>
+              <div class="event-info">
+                <div class="event-title">${event.title}</div>
+                <div class="event-date">${formatDate(event.eventstartdate)} ~ ${formatDate(event.eventenddate)}</div>
+                <div class="event-location">${event.addr1}</div>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        // 자동 슬라이드
+        let current = 0;
+        const slides = document.querySelectorAll('.event-slide');
+        setInterval(() => {
+          slides[current].classList.remove('active');
+          current = (current + 1) % slides.length;
+          slides[current].classList.add('active');
+        }, 3000);
+      });
+
+    function formatDate(str) {
+      return `${str.slice(0, 4)}.${str.slice(4, 6)}.${str.slice(6, 8)}`;
+    }
+  </script>
 
 </body>
 </html>
