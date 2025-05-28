@@ -95,45 +95,11 @@
         <p class="text-gray-600">총 24개의 숙소</p>
       </div>
 
-      <!-- 숙소 카드 예시 -->
-      <a href="detail.html">
-        <div class="bg-white shadow p-4 mb-4 rounded flex justify-between items-center">
-          <div>
-            <h3 class="text-lg font-bold">에메랄드 오션 리조트</h3>
-            <p class="text-sm text-gray-600">제주도 서귀포시</p>
-            <p class="text-yellow-500">★★★★☆ 4.5</p>
-            <p class="text-sm text-gray-600">바다 전망, 수영장, 조식 포함</p>
-          </div>
-          <div class="text-right">
-            <p class="text-red-500 font-bold text-lg">150,000원</p>
-            <p class="text-sm text-gray-500">1박 기준</p>
-            <button class="bg-red-500 text-white mt-2 px-4 py-1 rounded" onclick="location.href='reservation.html'">예약하기</button>
-          </div>
-        </div>
-      </a>
+<!-- 숙소 목록 영역 -->
+  <div id="accommodation-list"></div>
 
-      <div class="bg-white shadow p-4 mb-4 rounded flex justify-between items-center">
-        <div>
-          <h3 class="text-lg font-bold">산책 펜션</h3>
-          <p class="text-sm text-gray-600">강원도 평창군</p>
-          <p class="text-yellow-500">★★★★★ 4.8</p>
-          <p class="text-sm text-gray-600">산 전망, 바베큐, 온천</p>
-        </div>
-        <div class="text-right">
-          <p class="text-red-500 font-bold text-lg">120,000원</p>
-          <p class="text-sm text-gray-500">1박 기준</p>
-          <button class="bg-red-500 text-white mt-2 px-4 py-1 rounded" onclick="location.href='reservation.html'">예약하기</button>
-        </div>
-      </div>
-
-      <!-- 페이지네이션 -->
-      <div class="text-center mt-6">
-        <span class="mx-1 text-blue-600 font-bold">1</span>
-        <span class="mx-1 text-gray-500">2</span>
-        <span class="mx-1 text-gray-500">3</span>
-        <span class="mx-1 text-gray-500">4</span>
-        <span class="mx-1 text-gray-500">5</span>
-      </div>
+  <!-- 페이지네이션 영역 -->
+  <div class="text-center mt-6" id="pagination"></div>
     </main>
 
     <!-- 오른쪽 로그인 폼 -->
@@ -196,6 +162,72 @@
       return `${str.slice(0, 4)}.${str.slice(4, 6)}.${str.slice(6, 8)}`;
     }
   </script>
+
+  <script>
+    const itemsPerPage = 5;
+    let currentPage = 1;
+    let dataItems = [];
+
+    function renderPage(page) {
+      const list = document.getElementById('accommodation-list');
+      list.innerHTML = '';
+
+      const startIndex = (page - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageItems = dataItems.slice(startIndex, endIndex);
+
+      pageItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-white shadow p-4 mb-4 rounded flex justify-between items-center';
+
+        card.innerHTML = `
+          <div>
+            <a href = "detail.html">
+            <h3 class="text-lg font-bold">${item.title}</h3>
+            <p class="text-sm text-gray-600">${item.addr1 || '주소 정보 없음'}</p>
+            <p class="text-yellow-500">
+              ${item.rating ? '★'.repeat(Math.floor(item.rating)) + '☆'.repeat(5 - Math.floor(item.rating)) + ` ${item.rating}` : '평점 정보 없음'}
+            </p>
+            <p class="text-sm text-gray-600">${item.features || '특징 정보 없음'}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-red-500 font-bold text-lg">${item.price ? item.price.toLocaleString() + '원' : '가격 정보 없음'}</p>
+            <p class="text-sm text-gray-500">1박 기준</p>
+            <button class="bg-red-500 text-white mt-2 px-4 py-1 rounded" onclick="location.href='reservation.html'">예약하기</button>
+          </div>
+        `;
+
+        list.appendChild(card);
+      });
+    }
+
+    function setupPagination(totalItems) {
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+
+      const pageCount = Math.ceil(totalItems / itemsPerPage);
+      for (let i = 1; i <= pageCount; i++) {
+        const pageBtn = document.createElement('span');
+        pageBtn.textContent = i;
+        pageBtn.className = `mx-1 cursor-pointer ${i === currentPage ? 'text-blue-600 font-bold' : 'text-gray-500'}`;
+        pageBtn.onclick = () => {
+          currentPage = i;
+          renderPage(currentPage);
+          setupPagination(totalItems);
+        };
+        pagination.appendChild(pageBtn);
+      }
+    }
+
+    fetch('lodgment.json')
+      .then(res => res.json())
+      .then(data => {
+        dataItems = data.items;
+        renderPage(currentPage);
+        setupPagination(dataItems.length);
+      });
+  </script>
+
 
 </body>
 </html>
