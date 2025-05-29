@@ -5,6 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>천안 숙소 예약 시스템</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .event-slide {
+      display: none;
+    }
+
+    .event-slide.active {
+      display: block;
+    }
+
+    .event-card {
+      background: #fefefe;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .event-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+
+    .event-info {
+      padding: 10px;
+    }
+
+    .event-title {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .event-date, .event-location {
+      font-size: 0.85rem;
+      color: #555;
+    }
+  </style>
 </head>
 <body class="bg-gray-50">
 
@@ -44,6 +80,12 @@
         <label class="block"><input type="radio" name="rating"> ★★★☆☆</label>
       </div>
       <button class="bg-blue-500 text-white w-full py-2 rounded">필터 적용</button>
+      <div class="mb-4 mt-8">
+        <h3 class="text-md font-bold mb-2 text-center">🎉 천안 지역 축제</h3>
+        <div id="bannerContainer" class="relative w-full">
+          <!-- 슬라이드 카드들이 여기에 추가됨 -->
+        </div>
+      </div>
     </aside>
 
     <!-- 중앙 검색 결과 -->
@@ -53,46 +95,11 @@
         <p class="text-gray-600">총 24개의 숙소</p>
       </div>
 
-      <!-- 숙소 카드 -->
-      <a href="detail.html">
-        <div class="bg-white shadow p-4 mb-4 rounded flex justify-between items-center">
-          <div>
-            <h3 class="text-lg font-bold">에메랄드 오션 리조트</h3>
-            <p class="text-sm text-gray-600">제주도 서귀포시</p>
-            <p class="text-yellow-500">★★★★☆ 4.5</p>
-            <p class="text-sm text-gray-600">바다 전망, 수영장, 조식 포함</p>
-          </div>
-          <div class="text-right">
-            <p class="text-red-500 font-bold text-lg">150,000원</p>
-            <p class="text-sm text-gray-500">1박 기준</p>
-            <button class="bg-red-500 text-white mt-2 px-4 py-1 rounded" onclick="location.href='reservation.html'">예약하기</button>
-          </div>
-        </div>
-      </a>
-      
+<!-- 숙소 목록 영역 -->
+  <div id="accommodation-list"></div>
 
-      <div class="bg-white shadow p-4 mb-4 rounded flex justify-between items-center">
-        <div>
-          <h3 class="text-lg font-bold">산책 펜션</h3>
-          <p class="text-sm text-gray-600">강원도 평창군</p>
-          <p class="text-yellow-500">★★★★★ 4.8</p>
-          <p class="text-sm text-gray-600">산 전망, 바베큐, 온천</p>
-        </div>
-        <div class="text-right">
-          <p class="text-red-500 font-bold text-lg">120,000원</p>
-          <p class="text-sm text-gray-500">1박 기준</p>
-          <button class="bg-red-500 text-white mt-2 px-4 py-1 rounded" onclick="location.href='reservation.html'">예약하기</button>
-        </div>
-      </div>
-
-      <!-- 페이지네이션 -->
-      <div class="text-center mt-6">
-        <span class="mx-1 text-blue-600 font-bold">1</span>
-        <span class="mx-1 text-gray-500">2</span>
-        <span class="mx-1 text-gray-500">3</span>
-        <span class="mx-1 text-gray-500">4</span>
-        <span class="mx-1 text-gray-500">5</span>
-      </div>
+  <!-- 페이지네이션 영역 -->
+  <div class="text-center mt-6" id="pagination"></div>
     </main>
 
     <!-- 오른쪽 로그인 폼 -->
@@ -118,6 +125,110 @@
   <footer class="mt-12 text-center text-sm text-gray-600 py-4 border-t">
     천안 여행 숙소 예약 시스템 © 2025 | 고객센터: 1588-0000 | <a href="#" class="underline">개인정보처리방침</a>
   </footer>
+
+  <!-- 축제 배너 JS -->
+  <script>
+    fetch('festivals.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('bannerContainer');
+        data.slice(0, 5).forEach((event, idx) => {
+          const card = document.createElement('div');
+          card.className = `event-slide ${idx === 0 ? 'active' : ''}`;
+          card.innerHTML = `
+            <div class="event-card">
+              <img src="${event.firstimage}" alt="${event.title}" class="event-img"/>
+              <div class="event-info">
+                <div class="event-title">${event.title}</div>
+                <div class="event-date">${formatDate(event.eventstartdate)} ~ ${formatDate(event.eventenddate)}</div>
+                <div class="event-location">${event.addr1}</div>
+              </div>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+        // 자동 슬라이드
+        let current = 0;
+        const slides = document.querySelectorAll('.event-slide');
+        setInterval(() => {
+          slides[current].classList.remove('active');
+          current = (current + 1) % slides.length;
+          slides[current].classList.add('active');
+        }, 3000);
+      });
+
+    function formatDate(str) {
+      return `${str.slice(0, 4)}.${str.slice(4, 6)}.${str.slice(6, 8)}`;
+    }
+  </script>
+
+  <script>
+    const itemsPerPage = 5;
+    let currentPage = 1;
+    let dataItems = [];
+
+    function renderPage(page) {
+      const list = document.getElementById('accommodation-list');
+      list.innerHTML = '';
+
+      const startIndex = (page - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageItems = dataItems.slice(startIndex, endIndex);
+
+      pageItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-white shadow p-4 mb-4 rounded flex justify-between items-center';
+
+        card.innerHTML = `
+          <div>
+            <a href = "detail.html?contentId=${item.contentId}">
+            <h3 class="text-lg font-bold text-blue-600 hover:underline">${item.title}</h3>
+            </a>
+            <p class="text-sm text-gray-600">${item.addr1 || '주소 정보 없음'}</p>
+            <p class="text-yellow-500">
+              ${item.rating ? '★'.repeat(Math.floor(item.rating)) + '☆'.repeat(5 - Math.floor(item.rating)) + ` ${item.rating}` : '평점 정보 없음'}
+            </p>
+            <p class="text-sm text-gray-600">${item.features || '특징 정보 없음'}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-red-500 font-bold text-lg">${item.price ? item.price.toLocaleString() + '원' : '가격 정보 없음'}</p>
+            <p class="text-sm text-gray-500">1박 기준</p>
+            <button class="bg-red-500 text-white mt-2 px-4 py-1 rounded" onclick="location.href='reservation.html'">예약하기</button>
+          </div>
+        `;
+
+        list.appendChild(card);
+      });
+    }
+
+    function setupPagination(totalItems) {
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+
+      const pageCount = Math.ceil(totalItems / itemsPerPage);
+      for (let i = 1; i <= pageCount; i++) {
+        const pageBtn = document.createElement('span');
+        pageBtn.textContent = i;
+        pageBtn.className = `mx-1 cursor-pointer ${i === currentPage ? 'text-blue-600 font-bold' : 'text-gray-500'}`;
+        pageBtn.onclick = () => {
+          currentPage = i;
+          renderPage(currentPage);
+          setupPagination(totalItems);
+        };
+        pagination.appendChild(pageBtn);
+      }
+    }
+
+    fetch('lodgment.json')
+      .then(res => res.json())
+      .then(data => {
+        dataItems = data.items;
+        renderPage(currentPage);
+        setupPagination(dataItems.length);
+      });
+  </script>
+
 
 </body>
 </html>

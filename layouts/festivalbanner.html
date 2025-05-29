@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>천안 지역 축제 배너</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f7f7f7;
+    }
+    .slider-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 40px auto;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .slider-wrapper {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      background: white;
+      text-align: center;
+    }
+    .slide img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+    .slide .info {
+      padding: 20px;
+    }
+    .slide .title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .slide .date, .slide .location {
+      color: #555;
+      font-size: 0.95rem;
+    }
+    .nav-btns {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+    .nav-btns button {
+      background: rgba(0,0,0,0.4);
+      color: white;
+      border: none;
+      font-size: 2rem;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 style="text-align:center;">📅 천안 지역 축제 배너</h2>
+  <div class="slider-container">
+    <div class="slider-wrapper" id="sliderWrapper">
+      <!-- 슬라이드 자동 삽입 -->
+    </div>
+    <div class="nav-btns">
+      <button id="prevBtn">&#8592;</button>
+      <button id="nextBtn">&#8594;</button>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    let data = [];
+
+    fetch('festivals.json')
+      .then(res => res.json())
+      .then(json => {
+        data = json;
+        const wrapper = document.getElementById('sliderWrapper');
+        data.forEach(event => {
+          const slide = document.createElement('div');
+          slide.className = 'slide';
+          slide.innerHTML = `
+            <img src="${event.firstimage}" alt="${event.title}" />
+            <div class="info">
+              <div class="title">${event.title}</div>
+              <div class="date">${formatDate(event.eventstartdate)} ~ ${formatDate(event.eventenddate)}</div>
+              <div class="location">${event.addr1}</div>
+            </div>
+          `;
+          wrapper.appendChild(slide);
+        });
+        updateSlide();
+        setInterval(nextSlide, 5000); // 5초마다 자동 슬라이드
+      });
+
+    function formatDate(dateStr) {
+      return `${dateStr.substring(0, 4)}.${dateStr.substring(4, 6)}.${dateStr.substring(6, 8)}`;
+    }
+
+    function updateSlide() {
+      const wrapper = document.getElementById('sliderWrapper');
+      wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % data.length;
+      updateSlide();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + data.length) % data.length;
+      updateSlide();
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', nextSlide);
+    document.getElementById('prevBtn').addEventListener('click', prevSlide);
+  </script>
+
+</body>
+</html>
