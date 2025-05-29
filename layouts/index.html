@@ -182,8 +182,9 @@
 
         card.innerHTML = `
           <div>
-            <a href = "detail.html">
-            <h3 class="text-lg font-bold">${item.title}</h3>
+            <a href = "detail.html?contentId=${item.contentId}">
+            <h3 class="text-lg font-bold text-blue-600 hover:underline">${item.title}</h3>
+            </a>
             <p class="text-sm text-gray-600">${item.addr1 || '주소 정보 없음'}</p>
             <p class="text-yellow-500">
               ${item.rating ? '★'.repeat(Math.floor(item.rating)) + '☆'.repeat(5 - Math.floor(item.rating)) + ` ${item.rating}` : '평점 정보 없음'}
