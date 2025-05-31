@@ -1,0 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>천안 여행 정보 포털</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <%-- Tailwind CSS를 사용하므로 내부 <style> 태그는 제거하거나 최소화합니다. --%>
+</head>
+<body class="bg-gray-100 flex flex-col items-center min-h-screen">
+    <header class="bg-blue-600 text-white text-center py-6 text-3xl font-bold w-full mb-10">
+        천안에 오신 것을 환영합니다!
+    </header>
+
+    <main class="flex flex-wrap justify-center gap-8 px-4 py-8">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center w-full md:w-1/3 lg:w-1/4">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4">숙소 검색 및 예약</h2>
+            <p class="mb-6 text-gray-600">다양한 조건으로 천안의 숙소를 검색하고 예약하세요.</p>
+            <a href="${pageContext.request.contextPath}/hotelList"
+               class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-md transition duration-200">
+               숙소 검색하러 가기
+            </a>
+        </div>
+
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center w-full md:w-1/3 lg:w-1/4">
+            <h2 class="text-2xl font-bold text-blue-700 mb-4">추천 숙박 목록 (JSON 기반)</h2>
+            <p class="mb-6 text-gray-600">엄선된 숙박 시설 목록을 확인해보세요.</p>
+            <a href="${pageContext.request.contextPath}/lodgement.jsp"
+               class="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-md transition duration-200">
+               추천 목록 보기
+            </a>
+        </div>
+
+        <%-- 여기에 festival_banner.jsp를 include 하거나 링크를 추가할 수 있습니다. --%>
+        <%-- 예: <jsp:include page="festival_banner.jsp" /> --%>
+    </main>
+
+    <footer class="mt-12 text-center text-sm text-gray-600 py-4 border-t w-full">
+        천안 여행 정보 포털 © 2025
+    </footer>
+</body>
+</html>

@@ -1,0 +1,61 @@
+package controler;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import dto.ReservationDTO;
+//import dto.UserDTO; // 로그인된 사용자 정보를 가져오기 위해 필요 (실제 구현 시)
+
+@WebServlet("/mypage")
+public class MypageServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    // 모든 예약을 저장하는 임시 목록 (실제로는 DB 사용)
+    private List<ReservationDTO> getAllMockReservations() {
+        List<ReservationDTO> allReservations = new ArrayList<>();
+        allReservations.add(new ReservationDTO("RZ20250701-00123", "testUser", "H001", "천안 럭셔리 호텔", "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8aG90ZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60", "R001", "스탠다드 룸", "2025-07-01", "2025-07-03", 360000, "2025-06-15", "예약완료"));
+        allReservations.add(new ReservationDTO("RZ20250810-00245", "testUser", "H002", "아늑한 천안 펜션", "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8aG90ZWx8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60", "R101", "커플룸", "2025-08-10", "2025-08-12", 240000, "2025-07-20", "예약완료"));
+        allReservations.add(new ReservationDTO("RZ20250905-00301", "anotherUser", "H003", "비즈니스 호텔 천안", "https://images.unsplash.com/photo-1582719508461-905c673771fd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGhvdGVsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60", "R201", "기본 객실", "2025-09-05", "2025-09-07", 300000, "2025-08-01", "예약완료"));
+        allReservations.add(new ReservationDTO("RZ20250620-00100", "testUser", "H004", "에메랄드 오션 리조트 (예시)", "https://images.unsplash.com/photo-1590073242678-70ee3fc28e8e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGhvdGVsJTIwcmVzb3J0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60", "R003", "스위트 룸", "2025-06-20", "2025-06-22", 700000, "2025-06-01", "취소됨"));
+        return allReservations;
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false); // false: 세션이 없으면 새로 만들지 않음
+        String currentUserId = null;
+
+        // 실제 로그인 구현 시 세션에서 사용자 정보를 가져옵니다.
+        // if (session != null && session.getAttribute("loggedInUser") != null) {
+        //     UserDTO loggedInUser = (UserDTO) session.getAttribute("loggedInUser");
+        //     currentUserId = loggedInUser.getUserId(); // 또는 getUsername() 등
+        // } else {
+        //     // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+        //     response.sendRedirect(request.getContextPath() + "/login.jsp"); // 또는 로그인 서블릿 경로
+        //     return;
+        // }
+
+        // 임시로 사용자 ID를 "testUser"로 설정
+        currentUserId = "testUser";
+        // 만약 로그인 기능이 없다면, 모든 예약을 보여주거나 특정 사용자 ID를 하드코딩할 수 있습니다.
+
+        List<ReservationDTO> userReservations = getAllMockReservations().stream()
+                                                .filter(r -> currentUserId.equals(r.getUserId()))
+                                                .collect(Collectors.toList());
+
+        request.setAttribute("reservationList", userReservations);
+        request.setAttribute("userName", currentUserId); // JSP에서 사용자 이름 표시용
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/mypage.jsp");
+        dispatcher.forward(request, response);
+    }
+}

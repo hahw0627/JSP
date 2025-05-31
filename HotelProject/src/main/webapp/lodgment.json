@@ -1,0 +1,100 @@
+{
+  "items": [
+    {
+      "title": "모텔라마다",
+      "addr1": "충청남도 천안시 동남구 목천읍 동평3길 71",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/32/1964232_image2_1.jpg",
+      "tel": "041-557-5511"
+    },
+    {
+      "title": "베니키아 천안호텔",
+      "addr1": "충청남도 천안시 서북구 양지21길 42",
+      "firstimage": "",
+      "tel": "041-592-0000"
+    },
+    {
+        "title": "브라운도트 천안성정점",
+      "addr1": "충청남도 천안시 서북구 성정공원4길 28 (성정동)",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/18/3046218_image2_1.jpg",
+      "tel": ""
+    },
+    {
+      "title": "산울림펜션",
+      "addr1": "충청남도 천안시 동남구 목천읍 덕전1길 171",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/69/1871469_image2_1.jpg",
+      "tel": "041-556-5565"
+    },
+    {
+      "title": "소노벨 천안",
+      "addr1": "충청남도 천안시 동남구 성남면 종합휴양지로 200",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/54/2775654_image2_1.jpg",
+      "tel": ""
+    },
+    {
+      "title": "슈바이처도르프호텔",
+      "addr1": "충청남도 천안시 서북구 성정공원5로 42 (성정동)",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/44/3090644_image2_1.JPG",
+      "tel": ""
+    },
+    {
+      "title": "신라스테이 천안",
+      "addr1": "충청남도 천안시 서북구 동서대로 177",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/57/2717357_image2_1.jpg",
+      "tel": ""
+    },
+    {
+      "title": "어반스테이플러스",
+      "addr1": "충청남도 천안시 서북구 성정공원4길 31",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/49/3342549_image2_1.JPG",
+      "tel": "070-5158-5924"
+    },
+    {
+      "title": "에벤에셀 펜션",
+      "addr1": "충청남도 천안시 동남구 북면 위례성로 1434-24",
+      "firstimage": "",
+      "tel": ""
+    },
+    {
+      "title": "영모텔",
+      "addr1": "충청남도 천안시 동남구 신부2길 30",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/71/710971_image2_1.jpg",
+      "tel": "041-552-1515"
+    },
+    {
+      "title": "오엔시티호텔",
+      "addr1": "충청남도 천안시 서북구 불당4로 105",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/30/2595030_image2_1.jpg",
+      "tel": "041-553-8080"
+    },
+    {
+      "title": "자자호텔",
+      "addr1": "충청남도 천안시 서북구 성정동",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/20/3036820_image2_1.jpg",
+      "tel": ""
+    },
+    {
+      "title": "제우스모텔",
+      "addr1": "충청남도 천안시 서북구 성정공원3길 21 제우스",
+      "firstimage": "",
+      "tel": "041-556-3662"
+    },
+    {
+      "title": "천안메트로관광호텔",
+      "addr1": "충청남도 천안시 동남구 대흥로 241-11",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/41/1338241_image2_1.jpg",
+      "tel": "041-622-8211~2"
+    },
+    {
+      "title": "천안상록 유스호스텔",
+      "addr1": "충청남도 천안시 동남구 수신면 수신로 576",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/16/1964316_image2_1.jpg",
+      "tel": "041-560-9114"
+    },
+    {
+      "title": "탑클라우드 천안점",
+      "addr1": "충청남도 천안시 동남구 서부역6길 3",
+      "firstimage": "http://tong.visitkorea.or.kr/cms/resource/20/2775620_image2_1.jpg",
+      "tel": ""
+    }
+  ]
+}

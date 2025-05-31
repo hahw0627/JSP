@@ -1,0 +1,81 @@
+// 파일 경로: C:/full/path/YourProject/src/com/example/dto/Hotel.java (패키지명은 예시입니다)
+package com.example.dto; // 실제 프로젝트의 패키지명으로 변경해주세요.
+
+public class Hotel {
+    private String id;
+    private String title;
+    private String address;
+    private double rating; // 평점은 숫자로
+    private String facilities;
+    private int price;     // 가격은 숫자로
+
+    // 기본 생성자
+    public Hotel() {
+    }
+
+    // 모든 필드를 받는 생성자 (테스트 데이터 만들 때 유용)
+    public Hotel(String id, String title, String address, double rating, String facilities, int price) {
+        this.id = id;
+        this.title = title;
+        this.address = address;
+        this.rating = rating;
+        this.facilities = facilities;
+        this.price = price;
+    }
+
+    // Getter와 Setter 메소드들
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public String getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(String facilities) {
+        this.facilities = facilities;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    // (선택 사항) toString() 메소드 - 디버깅 시 유용
+    @Override
+    public String toString() {
+        return "Hotel [id=" + id + ", title=" + title + ", address=" + address + ", rating=" + rating
+                + ", facilities=" + facilities + ", price=" + price + "]";
+    }
+}

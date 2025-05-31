@@ -1,0 +1,64 @@
+package controler;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional; // Hotel 객체를 찾을 때 유용합니다.
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.dto.Hotel; // Hotel DTO 클래스를 import 합니다.
+
+@WebServlet("/hotelDetail")
+public class HotelDetailServlet extends HttpServlet {
+ private static final long serialVersionUID = 1L;
+
+ // 임시 숙소 데이터 (HotelListServlet과 동일한 데이터를 사용하거나, 별도로 관리할 수 있습니다)
+ // 실제 애플리케이션에서는 이 데이터가 DB에서 조회됩니다.
+ private List<Hotel> getMockHotelData() {
+     List<Hotel> hotelList = new ArrayList<>();
+     hotelList.add(new Hotel("H001", "천안 럭셔리 호텔", "천안시 동남구 신부동 123-45", 4.8, "수영장, 조식, Wifi, 피트니스 센터", 200000));
+     hotelList.add(new Hotel("H002", "아늑한 천안 펜션", "천안시 서북구 두정동 678-90", 4.5, "바베큐, 주차장, 개별 테라스", 120000));
+     hotelList.add(new Hotel("H003", "비즈니스 호텔 천안", "천안시 동남구 원성동 11-22", 4.2, "회의실, Wifi, 비즈니스 센터", 150000));
+     hotelList.add(new Hotel("H004", "에메랄드 오션 리조트 (예시)", "제주도 서귀포시 중문동 777", 4.5, "바다 전망 객실, 실외 수영장, 무료 조식, 와이파이, 무료 주차", 150000)); // detail.jsp의 기본값과 유사하게 추가
+     return hotelList;
+ }
+
+ protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+     // 1. 요청 파라미터에서 hotelId 가져오기
+     String hotelId = request.getParameter("hotelId");
+
+     Hotel selectedHotel = null;
+     if (hotelId != null && !hotelId.isEmpty()) {
+         List<Hotel> hotels = getMockHotelData();
+         // hotelId로 숙소 찾기
+         Optional<Hotel> foundHotel = hotels.stream()
+                                            .filter(h -> hotelId.equals(h.getId()))
+                                            .findFirst();
+         if (foundHotel.isPresent()) {
+             selectedHotel = foundHotel.get();
+         }
+     }
+
+     // 2. 찾은 숙소 정보를 request 객체에 속성으로 저장
+     if (selectedHotel != null) {
+         request.setAttribute("hotel", selectedHotel); // JSP에서 사용할 이름 "hotel"
+     } else {
+         // 해당 ID의 호텔이 없을 경우 (예: 오류 페이지로 보내거나, 기본 메시지 설정)
+         // 여기서는 간단히 null을 전달하고 JSP에서 처리하도록 합니다.
+         // 또는 에러 메시지를 설정할 수 있습니다.
+         // request.setAttribute("errorMessage", "해당하는 숙소 정보를 찾을 수 없습니다.");
+         System.out.println("Hotel not found for ID: " + hotelId);
+     }
+
+     // 3. detail.jsp 페이지로 포워딩
+     RequestDispatcher dispatcher = request.getRequestDispatcher("/detail.jsp"); // 실제 JSP 파일 경로
+     dispatcher.forward(request, response);
+ }
+}
